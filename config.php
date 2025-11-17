@@ -1,26 +1,20 @@
 <?php
-// config.php
-// Configuración de conexión a la base de datos del mini súper
+$DB_HOST = getenv("DB_HOST");
+$DB_USER = getenv("DB_USER");
+$DB_PASS = getenv("DB_PASS");
+$DB_NAME = getenv("DB_NAME");
+$DB_PORT = getenv("DB_PORT");
 
-$servidor   = "caboose.proxy.rlwy.net"; 
-$usuario    = "root"; 
-$contrasena = "PzRWvcHsVHhCXyLsRJhjdygSBwgwtEmG"; 
-$baseDatos  = "railway"; 
-$puerto     = 50284;              // Cambiar en el hosting
+$CEDULA_PROGRAMADOR = getenv("CEDULA_PROGRAMADOR");
+$CLAVE_AES = getenv("CLAVE_AES");
 
-/**
- * Crea y devuelve una conexión PDO.
- */
-function obtenerConexion() {
-    global $servidor, $baseDatos, $usuario, $contrasena;
+$conn = new mysqli($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME, $DB_PORT);
 
-    $dsn = "mysql:host={$servidor};dbname={$baseDatos};charset=utf8";
-
-    $opciones = [
-        PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
-    ];
-
-    return new PDO($dsn, $usuario, $contrasena, $opciones);
+if ($conn->connect_error) {
+    die(json_encode([
+        "exito" => false,
+        "mensaje" => "Error de conexión: " . $conn->connect_error,
+        "datos" => null
+    ]));
 }
 ?>
